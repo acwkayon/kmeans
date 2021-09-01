@@ -1,0 +1,24 @@
+--- # Simple K-means
+meta:
+  name         : Kmeans
+  title        : An animation demonstration for the kmeans clustering
+  keywords     : python, visualisation, clustering
+  version      : 1.0.0
+  languages    : py
+  license      : gpl3
+  author       : Gefei Shan
+  url          : https://github.com/davecatmeow/showcase-demo
+dependencies:
+  system:
+    - ffmpeg
+  python3:
+    - numpy
+    - matplotlib
+  pip3:
+    - scikit-learn
+  files:
+    - README.md
+    - demo.py
+commands:
+  demo : Demonstrate the model capabilities in one easy session.
+  

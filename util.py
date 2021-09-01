@@ -1,12 +1,16 @@
 import numpy as np
 from sklearn.datasets import make_blobs
 
+
 class KMeans:
-    def __init__(self, k):
-        data, origin_label = make_blobs(n_samples=k * 100, centers=k)
+    def __init__(self, k, samples=0):
+        if samples == 0:
+            samples = k * 100
+        data, origin_label = make_blobs(n_samples=samples, centers=k)
         self.k = k
         self.data = data
-        self.labels = np.array(list(np.arange(0, k)) * 100)
+        q = int((samples - 1) / k + 1) # ceiling of (samples/k)
+        self.labels = np.array(list(np.arange(0, k)) * q)[:samples]
         self.centers = np.zeros([k, data.shape[1]], dtype=np.float64)
         self.distance = np.zeros([data.shape[0], k], dtype=np.float64)
         # pre-calculate centers
