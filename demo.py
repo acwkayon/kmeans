@@ -1,9 +1,11 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-from matplotlib.colors import ListedColormap
+# import library
+print("import requiring libraries")
+
 from sklearn.datasets import make_blobs
-print("loading modules")
+from matplotlib.colors import ListedColormap
+import matplotlib.animation as animation
+import matplotlib.pyplot as plt
+import numpy as np
 
 print("generating dataset")
 

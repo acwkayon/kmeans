@@ -1,6 +1,6 @@
 --- # Simple K-means
 meta:
-  name         : Kmeans
+  name         : kmeans
   title        : An animation demonstration for the kmeans clustering
   keywords     : python, visualisation, clustering
   version      : 1.0.0
@@ -21,4 +21,3 @@ dependencies:
     - demo.py
 commands:
   demo : Demonstrate the model capabilities in one easy session.
-  
