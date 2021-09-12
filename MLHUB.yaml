@@ -19,5 +19,6 @@ dependencies:
   files:
     - README.md
     - demo.py
+    - examples/movie.mp4
 commands:
   demo : Demonstrate the model capabilities in one easy session.
