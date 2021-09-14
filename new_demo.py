@@ -2,7 +2,8 @@
 print("import requiring libraries")
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
-from utils import update, KMeans
+from utils import update, KMeans, view
+import os
 
 if __name__ == '__main__':
     fig, ax = plt.subplots()
@@ -14,3 +15,4 @@ if __name__ == '__main__':
     writer = animation.FFMpegWriter(
         fps=30, metadata=dict(artist='Me'), bitrate=1800)
     ani.save("examples/movie.mp4")
+    view(os.path.abspath("examples/movie.mp4"))

@@ -21,3 +21,9 @@ $ ml configure	kmeans
 $ ml demo	kmeans
 ```
 
+or
+
+```
+$ ml new_demo	kmeans
+```
+

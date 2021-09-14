@@ -3,7 +3,8 @@ from sklearn.datasets import make_blobs
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
-
+from platform import system
+from mlhub import mlcat, mlpreview
 
 class KMeans:
     def __init__(self, k, samples=0, n_features=2, centers=0):
@@ -95,6 +96,15 @@ class KMeans:
             yield i
             i += 1
 
+
+def is_linux():
+    return system() == "Linux"
+
+def view(filename):
+    if is_linux():
+        mlpreview(filename, previewer="totem")
+    else:
+        mlcat(text=f"Current system is not linux, please find file in {filename}")
 
 def update(i, kmeans: KMeans):
     # use as animation.FuncAnimation(fig, animate, farg = (kmeans,), interval=...)
