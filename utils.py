@@ -6,8 +6,9 @@ from matplotlib.colors import ListedColormap
 from platform import system
 from mlhub import mlcat, mlpreview
 
+
 class KMeans:
-    def __init__(self, k, samples=0, n_features=2, centers=0):
+    def __init__(self, k, samples=0, n_features=2, centers=0, input_data=None):
         print("Initializing data...")
         if centers == 0:
             centers = k
@@ -16,7 +17,10 @@ class KMeans:
         data, origin_label = make_blobs(
             n_samples=samples, n_features=n_features, centers=centers)
         self.k = k
-        self.data = data
+        if input_data is not None:
+            self.data = input_data
+        else:
+            self.data = data
         # first time assign labels, centers and distance
         q = int((samples - 1) / k + 1)  # ceiling of (samples/k)
         #self.labels = np.array(list(np.arange(0, k)) * q)[:samples]
@@ -100,11 +104,14 @@ class KMeans:
 def is_linux():
     return system() == "Linux"
 
+
 def view(filename):
     if is_linux():
         mlpreview(filename, previewer="totem")
     else:
-        mlcat(text=f"Current system is not linux, please find file in {filename}")
+        mlcat(
+            text=f"Current system is not linux, please find file in {filename}")
+
 
 def update(i, kmeans: KMeans):
     # use as animation.FuncAnimation(fig, animate, farg = (kmeans,), interval=...)
