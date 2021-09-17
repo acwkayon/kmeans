@@ -62,5 +62,5 @@ if __name__ == '__main__':
         fig, update_frame, frames=int(max_steps), interval=200)
     writer = animation.FFMpegWriter(
         fps=30, metadata=dict(artist='Me'), bitrate=1800)
-    ani.save("cache/movie.mp4")
+    ani.save("examples/demo_movie.mp4")
     print("Output to cache directory")

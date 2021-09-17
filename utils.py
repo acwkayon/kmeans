@@ -4,11 +4,11 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from platform import system
-from mlhub import mlcat, mlpreview
+from mlhub.pkg import mlcat, mlpreview
 
 
 class KMeans:
-    def __init__(self, k, samples=0, n_features=2, centers=0, input_data=None):
+    def __init__(self, k, samples=0, n_features=2, centers=0, input_data=None, repeat_times = 5):
         print("Initializing data...")
         if centers == 0:
             centers = k
@@ -31,7 +31,7 @@ class KMeans:
         self.select_centers()
         self.converge = -10
         self.converge_times = 0
-        self.repeat_times = 5
+        self.repeat_times = repeat_times
         self.init_cm()
 
     def calculate_labels(self):
@@ -84,7 +84,7 @@ class KMeans:
 
     def plot_centers(self):
         if self.data.shape[1] > 2:
-            center = self.pca_model.transform(kmeans.centers)
+            center = self.pca_model.transform(self.centers)
         else:
             center = self.centers
         self.scatter_1.set_offsets(center)
