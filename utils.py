@@ -4,11 +4,38 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from platform import system
-from mlhub.pkg import mlcat, mlpreview
+from mlhub.pkg import mlcat, mlpreview, get_cmd_cwd
+from pathlib import Path
+import os
+
+
+def join_path(filename):
+    return os.path.abspath( os.path.join(get_cmd_cwd(), filename))
+
+def prepare(filepath):
+    # mkdir if the file path directory is not exist
+    directory = os.path.dirname(filepath)
+    Path(directory).mkdir(parents=True,exist_ok=True)
+
+def save_animation(ani, filepath):
+    prepare(filepath)
+    ani.save(filepath)
+    print(f"Save animation to {filepath}")
+
+def is_linux():
+    return system() == "Linux"
+
+def view(filename, previewer = "totem"):
+    # popout the file when under Linux
+    if is_linux():
+        mlpreview(filename, previewer=previewer)
+    else:
+        mlcat(
+            text=f"Current system is not linux, please find file in {filename}")
 
 
 class KMeans:
-    def __init__(self, k, samples=0, n_features=2, centers=0, input_data=None, repeat_times = 5):
+    def __init__(self, k, samples=0, n_features=2, centers=0, input_data=None, repeat_times=5):
         print("Initializing data...")
         if centers == 0:
             centers = k
@@ -99,18 +126,6 @@ class KMeans:
                 i = 0
             yield i
             i += 1
-
-
-def is_linux():
-    return system() == "Linux"
-
-
-def view(filename):
-    if is_linux():
-        mlpreview(filename, previewer="totem")
-    else:
-        mlcat(
-            text=f"Current system is not linux, please find file in {filename}")
 
 
 def update(i, kmeans: KMeans):
