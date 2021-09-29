@@ -27,7 +27,7 @@ if __name__ == '__main__':
     kmeans = KMeans(3, samples=150, input_data=data)
     kmeans.set_ax(ax)
     ani = animation.FuncAnimation(
-        fig, update, frames=kmeans.itergenetor(), fargs=(kmeans,), interval=200, save_count=150)
+        fig, update, frames=kmeans.itergenetor(), fargs=(kmeans,), interval=200, save_count=200)
     writer = animation.FFMpegWriter(
         fps=30, metadata=dict(artist='Me'), bitrate=1800)
     # ani.save("examples/iris.mp4")

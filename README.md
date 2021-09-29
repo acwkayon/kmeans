@@ -8,7 +8,7 @@ A animation demo for k-means, idea from [mlhub's model](https://github.com/mlhub
 $ pip3 install mlhub
 ```
 
-* To install and configure the package:
+* To install and configure the package(if have previous version, please `ml remove` first):
 
 ```
 $ ml install	davecatmeow/showcase-demo
@@ -24,6 +24,6 @@ $ ml demo	kmeans
 or
 
 ```
-$ ml new_demo	kmeans
+$ ml iris	kmeans
 ```
 

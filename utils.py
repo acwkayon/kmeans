@@ -35,7 +35,7 @@ def view(filename, previewer = "totem"):
 
 
 class KMeans:
-    def __init__(self, k, samples=0, n_features=2, centers=0, input_data=None, repeat_times=5):
+    def __init__(self, k, samples=0, n_features=2, centers=0, input_data=None, repeat_times=3):
         print("Initializing data...")
         if centers == 0:
             centers = k
@@ -80,7 +80,7 @@ class KMeans:
         # random select centers from data, without repeat
         mask = np.random.choice(self.data.shape[0], size=self.k, replace=False)
         self.centers = self.data[mask]
-        self.converge = -2
+        self.converge = -10
         self.calculate_labels()
 
     def pca(self):
