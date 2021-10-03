@@ -5,12 +5,16 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from platform import system
 from mlhub.pkg import mlcat, mlpreview, get_cmd_cwd
+from mlhub.utils import get_package_dir
 from pathlib import Path
 import os
 
 
 def join_path(filename):
-    return os.path.abspath( os.path.join(get_cmd_cwd(), filename))
+    # under linux: join the file path with package directory(~/.mlhub/kmeans)
+    # under window: join the file path with cwd, for convince of debug
+    dirpath = get_package_dir() if is_linux() else get_cmd_cwd()
+    return os.path.abspath( os.path.join(dirpath, filename))
 
 def prepare(filepath):
     # mkdir if the file path directory is not exist
@@ -18,6 +22,7 @@ def prepare(filepath):
     Path(directory).mkdir(parents=True,exist_ok=True)
 
 def save_animation(ani, filepath):
+    # save animation to the filepath, no matter whether the place exist
     prepare(filepath)
     ani.save(filepath)
     print(f"Save animation to {filepath}")
@@ -26,7 +31,7 @@ def is_linux():
     return system() == "Linux"
 
 def view(filename, previewer = "totem"):
-    # popout the file when under Linux
+    # popout the file when under Linux,
     if is_linux():
         mlpreview(filename, previewer=previewer)
     else:
@@ -56,9 +61,9 @@ class KMeans:
         self.distance = np.zeros([data.shape[0], k], dtype=np.float64)
         # self.calculate_centers()
         self.select_centers()
-        self.converge = -10
+        self.converge = -10 # the frames would still remain after the algorithm converge
         self.converge_times = 0
-        self.repeat_times = repeat_times
+        self.repeat_times = repeat_times # the times the algorithm will repeat
         self.init_cm()
 
     def calculate_labels(self):
@@ -126,6 +131,8 @@ class KMeans:
                 i = 0
             yield i
             i += 1
+
+#todo: convex hull
 
 
 def update(i, kmeans: KMeans):

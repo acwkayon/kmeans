@@ -14,6 +14,5 @@ if __name__ == '__main__':
     ani = animation.FuncAnimation(fig, update, frames=kmeans.itergenetor(),fargs=(kmeans,),interval=200)
     writer = animation.FFMpegWriter(
         fps=30, metadata=dict(artist='Me'), bitrate=1800)
-    #ani.save("examples/movie.mp4")
     save_animation(ani, join_path("examples/movie.mp4"))
     view(os.path.abspath("examples/movie.mp4"))
