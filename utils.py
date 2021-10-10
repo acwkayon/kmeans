@@ -13,7 +13,7 @@ import os
 def join_path(filename):
     # under linux: join the file path with package directory(~/.mlhub/kmeans)
     # under window: join the file path with cwd, for convince of debug
-    dirpath = get_package_dir() if is_linux() else get_cmd_cwd()
+    dirpath = get_package_dir("kmeans") if is_linux() else get_cmd_cwd()
     return os.path.abspath( os.path.join(dirpath, filename))
 
 def prepare(filepath):
@@ -30,29 +30,25 @@ def save_animation(ani, filepath):
 def is_linux():
     return system() == "Linux"
 
-def view(filename, previewer = "totem"):
-    # popout the file when under Linux,
-    if is_linux():
-        mlpreview(filename, previewer=previewer)
-    else:
-        mlcat(
-            text=f"Current system is not linux, please find file in {filename}")
-
+def view(filename, previewer = None):
+    mlpreview(filename, begin = "Opening file... ",msg="Close the graphic window using Ctrl-W. ", previewer=previewer)
 
 class KMeans:
-    def __init__(self, k, samples=0, n_features=2, centers=0, input_data=None, repeat_times=3):
+    # Class for K-means algorithm, with k as the clustering target
+    def __init__(self, k, samples=0, n_features=2, centers=0, input_data=None, repeat_times=3, cluster_std=1.0):
         print("Initializing data...")
         if centers == 0:
             centers = k
         if samples == 0:
             samples = k * 100
+        # using sklearn make_blobs method to generate data
         data, origin_label = make_blobs(
-            n_samples=samples, n_features=n_features, centers=centers)
-        self.k = k
+            n_samples=samples, n_features=n_features, centers=centers, center_box=(-10.0, 10.0), cluster_std=cluster_std)
         if input_data is not None:
             self.data = input_data
         else:
             self.data = data
+        self.k = k
         # first time assign labels, centers and distance
         q = int((samples - 1) / k + 1)  # ceiling of (samples/k)
         #self.labels = np.array(list(np.arange(0, k)) * q)[:samples]
@@ -62,7 +58,7 @@ class KMeans:
         # self.calculate_centers()
         self.select_centers()
         self.converge = -10 # the frames would still remain after the algorithm converge
-        self.converge_times = 0
+        self.converge_times = 0 # count the times the algorithm already converged
         self.repeat_times = repeat_times # the times the algorithm will repeat
         self.init_cm()
 
@@ -99,7 +95,7 @@ class KMeans:
         cm = plt.cm.get_cmap("viridis")
         my_cmap = cm(np.linspace(0, 1, self.k))
         # Set alpha
-        my_cmap[:, -1] = 0.3
+        my_cmap[:, -1] = 0.5
         # Create new colormap
         self.my_cmap = ListedColormap(my_cmap)
 
@@ -123,12 +119,14 @@ class KMeans:
 
     def itergenetor(self):
         # genetor for frame iteration, exhausted after converge serval times
-        i = 0
+        if self.converge_times == 0:
+            i = 0
         while self.converge_times < self.repeat_times:
             if self.converge > 0:
                 self.converge_times += 1
-                self.select_centers()
-                i = 0
+                if self.repeat_times-self.converge > 0:
+                    self.select_centers()
+                    i = 0
             yield i
             i += 1
 
