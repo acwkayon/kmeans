@@ -2,3 +2,4 @@ cache
 *.mp4
 *.png
 __pycache__
+test_outcsv.py

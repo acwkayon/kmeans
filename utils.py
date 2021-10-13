@@ -31,7 +31,7 @@ def is_linux():
     return system() == "Linux"
 
 def view(filename, previewer = None):
-    mlpreview(filename, begin = "Opening file... ",msg="Close the graphic window using Ctrl-W. ", previewer=previewer)
+    mlpreview(filename, begin = "Opening file...\n\n",msg="Close the graphic window using Ctrl-W. ", previewer=previewer)
 
 class KMeans:
     # Class for K-means algorithm, with k as the clustering target
@@ -52,9 +52,9 @@ class KMeans:
         # first time assign labels, centers and distance
         q = int((samples - 1) / k + 1)  # ceiling of (samples/k)
         #self.labels = np.array(list(np.arange(0, k)) * q)[:samples]
-        self.labels = np.zeros(data.shape[0], dtype=np.float64)
-        self.centers = np.zeros([k, data.shape[1]], dtype=np.float64)
-        self.distance = np.zeros([data.shape[0], k], dtype=np.float64)
+        self.labels = np.zeros(self.data.shape[0], dtype=np.float64)
+        self.centers = np.zeros([k, self.data.shape[1]], dtype=np.float64)
+        self.distance = np.zeros([self.data.shape[0], k], dtype=np.float64)
         # self.calculate_centers()
         self.select_centers()
         self.converge = -10 # the frames would still remain after the algorithm converge
@@ -84,6 +84,29 @@ class KMeans:
         self.converge = -10
         self.calculate_labels()
 
+    def farest_point(self):
+        # return centroids given by farest points
+        # first random select one centroid
+        mask = np.random.choice(self.data.shape[0], size=1, replace=False)
+        first_point = self.data[mask]
+        centers = np.array(first_point)
+        # for the following k-1 centroids, find the farest point to all exist centroids
+        for i in range(1, self.k):
+            maxdis = 0
+            select_center = None
+            for point in self.data:
+                dis =  (np.linalg.norm((centers - point), axis=1)).min()
+                if dis > maxdis:
+                    maxdis = dis
+                    select_center = point
+            centers = np.append(centers, select_center.reshape(1,-1), axis=0)
+        #print(centers)
+        return centers
+
+    def farest_center(self):
+        self.centers = self.farest_point()
+        self.calculate_labels()
+
     def pca(self):
         # return the 2-d PCA result, mainly for animation plotting
         self.pca_model = PCA(n_components=2)
@@ -109,6 +132,7 @@ class KMeans:
                                          c=self.labels, cmap=self.my_cmap, marker='.', lw=0.5)
         self.scatter_1 = self.ax.scatter(self.centers[:, 0], self.centers[:, 1], c=range(
             self.k), cmap="viridis",  marker='x', lw=3, s=60)
+        self.plot_centers()
 
     def plot_centers(self):
         if self.data.shape[1] > 2:

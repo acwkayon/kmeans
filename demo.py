@@ -8,8 +8,7 @@ import os
 from mlhub.pkg import mlcat, mlask
 
 if __name__ == '__main__':
-    introduction = '''k-means is an unsupervised clustering algorithm, which does not require any pre-labeled knowledge. \
-    The algorithm groups data into k clusters, each is represent by its cluster centroid, which is chosen randomly in our showcase, as shown in the following figure.\n
+    introduction = '''k-means is an unsupervised clustering algorithm, which does not require any pre-labeled knowledge. The algorithm groups data into k clusters, each is represent by its cluster centroid, which is chosen randomly in our showcase, as shown in the following figure.\n
     '''
     mlcat(title="K-means algorithm showcase demo", text=introduction, delim="=", begin="", end="")
     fig, ax = plt.subplots()
@@ -19,12 +18,10 @@ if __name__ == '__main__':
     ax.set_ylabel("income")
     kmeans.set_ax(ax)
     fig.savefig(join_path("examples/Initializing.png"))
-    mlask(begin= "Will show the randomly initialized centroids.\t")
+    mlask(begin= "Will show the randomly initialized centroids.\n",end="Now ")
     view(os.path.abspath("examples/Initializing.png"))
     mlask(end = '\r')
-    introduction_steps = '''The algorithm iteratively applies the 2 steps:\n\
-    1. Assign all data points to its nearest centroid;\n\
-    2. Update the centroids position as the mean of its clusters.\n
+    introduction_steps = '''The algorithm iteratively applies the 2 steps:\n\n 1. Assign all data points to its nearest centroid;\n\n 2. Update the centroids position as the mean of its clusters.\n\nThe algorithm would stop at an optimal point where repeating the 2 steps would not increase any performance, or the centers would stop moving.\n
     '''
     mlcat(title="K-means algorithm showcase demo", text=introduction_steps, delim="=", begin="", end="")
     ani = animation.FuncAnimation(fig, update, frames=50,fargs=(kmeans,),interval=500)
@@ -66,4 +63,4 @@ if __name__ == '__main__':
     mlask(end = '\r')
     plot_origin(iris_labels,kmeans, join_path("examples/iris.png"))
     view(join_path("examples/iris.png"))
-    mlask(prompt = "Press Enter to Exit: ")
+    mlask(prompt = "Press Enter to Exit")
