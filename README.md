@@ -24,6 +24,5 @@ $ ml demo	kmeans
 or
 
 ```
-$ ml iris	kmeans
+$ ml train kmeans [k] [test.csv]
 ```
-
