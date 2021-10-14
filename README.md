@@ -21,8 +21,17 @@ $ ml configure	kmeans
 $ ml demo	kmeans
 ```
 
-or
+### Train model on given data
 
 ```
-$ ml train kmeans [k] [test.csv]
+$ ml train kmeans [k] [input.csv] -o [output.csv]
 ```
+or
+```
+$ ml train kmeans [k] [input.csv] > [output.csv]
+```
+
+
+With input dataset `n` lines and `f` features, the output will be:
+ * `n+k` lines where the addition `k` lines represents the `k` centers of clusters
+ * `f+1` columns where the addition column represents labels of data

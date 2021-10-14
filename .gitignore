@@ -3,3 +3,4 @@ cache
 *.png
 __pycache__
 test_outcsv.py
+out.csv

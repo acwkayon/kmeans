@@ -21,11 +21,12 @@ def prepare(filepath):
     directory = os.path.dirname(filepath)
     Path(directory).mkdir(parents=True,exist_ok=True)
 
-def save_animation(ani, filepath):
+def save_animation(ani, filepath, output=True):
     # save animation to the filepath, no matter whether the place exist
     prepare(filepath)
     ani.save(filepath)
-    print(f"Save animation to {filepath}")
+    if output:
+        print(f"Save animation to {filepath}")
 
 def is_linux():
     return system() == "Linux"
@@ -35,8 +36,10 @@ def view(filename, previewer = None):
 
 class KMeans:
     # Class for K-means algorithm, with k as the clustering target
-    def __init__(self, k, samples=0, n_features=2, centers=0, input_data=None, repeat_times=3, cluster_std=1.0):
-        print("Initializing data...")
+    def __init__(self, k, samples=0, n_features=2, centers=0, input_data=None, repeat_times=3, cluster_std=1.0, slience = False):
+        self.slience = slience
+        if not self.slience:
+            print("Initializing data...")
         if centers == 0:
             centers = k
         if samples == 0:
@@ -110,7 +113,8 @@ class KMeans:
     def pca(self):
         # return the 2-d PCA result, mainly for animation plotting
         self.pca_model = PCA(n_components=2)
-        print("applying PCA to reduce dimensions to 2")
+        if not self.slience:
+            print("applying PCA to reduce dimensions to 2")
         return self.pca_model.fit_transform(self.data)
 
     def init_cm(self):
@@ -157,7 +161,7 @@ class KMeans:
 #todo: convex hull
 
 
-def update(i, kmeans: KMeans):
+def update(i, kmeans: KMeans, output=True):
     # use as animation.FuncAnimation(fig, animate, farg = (kmeans,), interval=...)
     if i == 0:
         kmeans.scatter_0.set_array(kmeans.labels)
@@ -169,5 +173,6 @@ def update(i, kmeans: KMeans):
         kmeans.calculate_centers()
         kmeans.plot_centers()
     kmeans.ax.set_title(f'Step: {int(i/2)}')
-    print(f"rendering frame {i}", end='\r')
+    if output:
+        print(f"rendering frame {i}", end='\r')
     return (kmeans.scatter_0, kmeans.scatter_1)
