@@ -4,7 +4,7 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from platform import system
-from mlhub.pkg import mlcat, mlpreview, get_cmd_cwd
+from mlhub.pkg import mlcat, mlpreview, get_cmd_cwd, mlask
 from mlhub.utils import get_package_dir
 from pathlib import Path
 import os
@@ -33,6 +33,7 @@ def is_linux():
 
 def view(filename, previewer = None):
     mlpreview(filename, begin = "Opening file...\n\n",msg="Close the graphic window using Ctrl-W. ", previewer=previewer)
+    mlask(begin = "\n", end = "\n")
 
 class KMeans:
     # Class for K-means algorithm, with k as the clustering target
