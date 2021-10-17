@@ -27,4 +27,5 @@ dependencies:
     - test.csv
 commands:
   demo : Demonstrate the model capabilities in one easy session.
-  train : Perform the kmeans model on a given csv data file.
+  train : Training the kmeans model on a given csv data file.
+  predict : label the dataset with a provided model file(csv for cluster centers)

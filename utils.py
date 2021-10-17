@@ -14,12 +14,14 @@ def join_path(filename):
     # under linux: join the file path with package directory(~/.mlhub/kmeans)
     # under window: join the file path with cwd, for convince of debug
     dirpath = get_package_dir("kmeans") if is_linux() else get_cmd_cwd()
-    return os.path.abspath( os.path.join(dirpath, filename))
+    return os.path.abspath(os.path.join(dirpath, filename))
+
 
 def prepare(filepath):
     # mkdir if the file path directory is not exist
     directory = os.path.dirname(filepath)
-    Path(directory).mkdir(parents=True,exist_ok=True)
+    Path(directory).mkdir(parents=True, exist_ok=True)
+
 
 def save_animation(ani, filepath, output=True):
     # save animation to the filepath, no matter whether the place exist
@@ -28,16 +30,20 @@ def save_animation(ani, filepath, output=True):
     if output:
         print(f"Save animation to {filepath}")
 
+
 def is_linux():
     return system() == "Linux"
 
-def view(filename, previewer = None):
-    mlpreview(filename, begin = "Opening file...\n\n",msg="Close the graphic window using Ctrl-W. ", previewer=previewer)
-    mlask(begin = "\n", end = "\n")
+
+def view(filename, previewer=None):
+    mlpreview(filename, begin="Opening file...\n\n",
+              msg="Close the graphic window using Ctrl-W. ", previewer=previewer)
+    mlask(begin="\n", end="\n")
+
 
 class KMeans:
     # Class for K-means algorithm, with k as the clustering target
-    def __init__(self, k, samples=0, n_features=2, centers=0, input_data=None, repeat_times=3, cluster_std=1.0, slience = False):
+    def __init__(self, k, samples=0, n_features=2, centers=0, input_data=None, repeat_times=3, cluster_std=1.0, slience=False):
         self.slience = slience
         if not self.slience:
             print("Initializing data...")
@@ -61,9 +67,9 @@ class KMeans:
         self.distance = np.zeros([self.data.shape[0], k], dtype=np.float64)
         # self.calculate_centers()
         self.select_centers()
-        self.converge = -10 # the frames would still remain after the algorithm converge
-        self.converge_times = 0 # count the times the algorithm already converged
-        self.repeat_times = repeat_times # the times the algorithm will repeat
+        self.converge = -10  # the frames would still remain after the algorithm converge
+        self.converge_times = 0  # count the times the algorithm already converged
+        self.repeat_times = repeat_times  # the times the algorithm will repeat
         self.init_cm()
 
     def calculate_labels(self):
@@ -99,12 +105,12 @@ class KMeans:
             maxdis = 0
             select_center = None
             for point in self.data:
-                dis =  (np.linalg.norm((centers - point), axis=1)).min()
+                dis = (np.linalg.norm((centers - point), axis=1)).min()
                 if dis > maxdis:
                     maxdis = dis
                     select_center = point
-            centers = np.append(centers, select_center.reshape(1,-1), axis=0)
-        #print(centers)
+            centers = np.append(centers, select_center.reshape(1, -1), axis=0)
+        # print(centers)
         return centers
 
     def farest_center(self):
@@ -153,13 +159,13 @@ class KMeans:
         while self.converge_times < self.repeat_times:
             if self.converge > 0:
                 self.converge_times += 1
-                if self.repeat_times-self.converge > 0:
+                if self.repeat_times - self.converge > 0:
                     self.select_centers()
                     i = 0
             yield i
             i += 1
 
-#todo: convex hull
+# todo: convex hull
 
 
 def update(i, kmeans: KMeans, output=True):
