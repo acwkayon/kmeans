@@ -25,6 +25,7 @@ dependencies:
     - iris.py
     - train.py
     - test.csv
+    - predict.py
 commands:
   demo : Demonstrate the model capabilities in one easy session.
   train : Training the kmeans model on a given csv data file.
