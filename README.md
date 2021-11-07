@@ -35,3 +35,11 @@ $ ml train kmeans [k] [input.csv] > [output.csv]
 With input dataset `n` lines and `f` features, the output will be:
  * `n+k` lines where the addition `k` lines represents the `k` centers of clusters
  * `f+1` columns where the addition column represents labels of data
+
+### Predict data on given model
+
+```
+ml predict kmeans [options] [modelfile] <csvfile>
+     -o <file.csv>   --output=<file.csv>       Save the output predictions to file.
+```
+
