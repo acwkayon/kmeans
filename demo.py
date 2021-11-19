@@ -50,7 +50,7 @@ to its nearest centroid.
 
     mlask(begin="\n", end="\n")
 
-    view(os.path.abspath("examples/Initializing.png"))
+    view(join_path("examples/Initializing.png"))
 
     introduction_steps = """The algorithm iteratively applies the 2 steps:
 
