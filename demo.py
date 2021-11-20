@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 #
-# Time-stamp: <Saturday 2021-11-20 20:54:33 AEDT Graham Williams>
-#
-# Copyright (c) Gefei Shan, Graham Williams. All rights reserved.
-# Licensed under GPLv3
-# Authors: Gefei Chen, Graham.Williams@togaware.com
-#
 # MLHub demonstrator and toolkit for kmeans.
+#
+# Time-stamp: <Sunday 2021-11-21 08:49:04 AEDT Graham Williams>
+#
+# Authors: Gefei Shan, Graham.Williams@togaware.com
+# License: General Public License v3 GPLv3
+# License: https://www.gnu.org/licenses/gpl-3.0.en.html
+# Copyright: (c) Gefei Shan, Graham Williams. All rights reserved.
+
 
 import shutil
 import tempfile
@@ -14,10 +16,12 @@ import tempfile
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
-from utils import update, KMeans, view, save_animation, plot_origin
-
 from mlhub.pkg import mlcat, mlask
 
+from utils import update, KMeans, view, save_animation, plot_origin
+
+
+# Step through a series of demonstrations and introduce k-means.
 
 def main():
 
