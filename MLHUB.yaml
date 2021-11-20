@@ -6,8 +6,8 @@ meta:
   version      : 0.1.0
   languages    : py
   license      : gpl3
-  author       : Gefei Shan
-  url          : https://github.com/davecatmeow/showcase-demo
+  author       : Gefei Shan, Graham Williams
+  url          : https://github.com/gjwgit/kmeans
 dependencies:
   system:
     - ffmpeg
@@ -20,13 +20,11 @@ dependencies:
   files:
     - README.md
     - demo.py
-    - examples/movie.mp4: examples/movie.mp4
-    - utils.py
-    - iris.py
     - train.py
-    - test.csv
     - predict.py
+    - utils.py
+    - iris.csv
 commands:
   demo : Demonstrate the model capabilities in one easy session.
   train : Training the kmeans model on a given csv data file.
-  predict : label the dataset with a provided model file(csv for cluster centers)
+  predict : label the dataset with a provided model file(csv for cluster centres)
