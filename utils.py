@@ -4,17 +4,9 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from platform import system
-from mlhub.pkg import mlcat, mlpreview, get_cmd_cwd, mlask
-from mlhub.utils import get_package_dir
+from mlhub.pkg import mlpreview, mlask
 from pathlib import Path
 import os
-
-
-def join_path(filename):
-    # under linux: join the file path with package directory(~/.mlhub/kmeans)
-    # under window: join the file path with cwd, for convince of debug
-    dirpath = get_package_dir("kmeans") if is_linux() else get_cmd_cwd()
-    return os.path.abspath(os.path.join(dirpath, filename))
 
 
 def prepare(filepath):
@@ -25,7 +17,6 @@ def prepare(filepath):
 
 def save_animation(ani, filepath, verbose=True):
     # save animation to the filepath, no matter whether the place exist
-    print(filepath)
     prepare(filepath)
     ani.save(filepath)
     if verbose:
@@ -36,15 +27,19 @@ def is_linux():
     return system() == "Linux"
 
 
-def view(filename, previewer=None):
-    mlpreview(filename, begin="Opening file...\n\n",
-              msg="Close the graphic window using Ctrl-W. ", previewer=previewer)
-    mlask(begin="\n", end="\n")
+def view(filename, previewer=None, ask=True):
+    mlpreview(filename,
+              begin="Opening file...\n\n",
+              msg="Close the graphic window using Ctrl-W. ",
+              previewer=previewer)
+    if ask:
+        mlask(begin="\n", end="\n")
 
 
 class KMeans:
     # Class for K-means algorithm, with k as the clustering target
-    def __init__(self, k, samples=0, n_features=2, centers=0, input_data=None, repeat_times=3, cluster_std=1.0, slience=False):
+    def __init__(self, k, samples=0, n_features=2, centers=0, input_data=None,
+                 repeat_times=3, cluster_std=1.0, slience=False):
         self.slience = slience
         if not self.slience:
             print("Initializing data...")
@@ -54,15 +49,16 @@ class KMeans:
             samples = k * 100
         # using sklearn make_blobs method to generate data
         data, origin_label = make_blobs(
-            n_samples=samples, n_features=n_features, centers=centers, center_box=(-10.0, 10.0), cluster_std=cluster_std)
+            n_samples=samples, n_features=n_features, centers=centers,
+            center_box=(-10.0, 10.0), cluster_std=cluster_std)
         if input_data is not None:
             self.data = input_data
         else:
             self.data = data
         self.k = k
         # first time assign labels, centers and distance
-        q = int((samples - 1) / k + 1)  # ceiling of (samples/k)
-        #self.labels = np.array(list(np.arange(0, k)) * q)[:samples]
+        # q = int((samples - 1) / k + 1)  # ceiling of (samples/k)
+        # self.labels = np.array(list(np.arange(0, k)) * q)[:samples]
         self.labels = np.zeros(self.data.shape[0], dtype=np.float64)
         self.centers = np.zeros([k, self.data.shape[1]], dtype=np.float64)
         self.distance = np.zeros([self.data.shape[0], k], dtype=np.float64)
@@ -101,7 +97,8 @@ class KMeans:
         mask = np.random.choice(self.data.shape[0], size=1, replace=False)
         first_point = self.data[mask]
         centers = np.array(first_point)
-        # for the following k-1 centroids, find the farest point to all exist centroids
+        # for the following k-1 centroids,
+        # find farest point to all exist centroids
         for i in range(1, self.k):
             maxdis = 0
             select_center = None
@@ -122,7 +119,7 @@ class KMeans:
         # return the 2-d PCA result, mainly for animation plotting
         self.pca_model = PCA(n_components=2)
         if not self.slience:
-            print("applying PCA to reduce dimensions to 2")
+            print("Applying PCA to reduce dimensions to 2.")
         return self.pca_model.fit_transform(self.data)
 
     def init_cm(self):
@@ -140,10 +137,16 @@ class KMeans:
             self.printdata = self.pca()
         else:
             self.printdata = self.data
-        self.scatter_0 = self.ax.scatter(self.printdata[:, 0], self.printdata[:, 1],
-                                         c=self.labels, cmap=self.my_cmap, marker='.', lw=0.5)
-        self.scatter_1 = self.ax.scatter(self.centers[:, 0], self.centers[:, 1], c=range(
-            self.k), cmap="viridis",  marker='x', lw=3, s=60)
+        self.scatter_0 = self.ax.scatter(self.printdata[:, 0],
+                                         self.printdata[:, 1],
+                                         c=self.labels,
+                                         cmap=self.my_cmap,
+                                         marker='.', lw=0.5)
+        self.scatter_1 = self.ax.scatter(self.centers[:, 0],
+                                         self.centers[:, 1],
+                                         c=range(self.k),
+                                         cmap="viridis",
+                                         marker='x', lw=3, s=60)
         self.plot_centers()
 
     def plot_centers(self):
@@ -170,7 +173,7 @@ class KMeans:
 
 
 def update(i, kmeans: KMeans, output=True):
-    # use as animation.FuncAnimation(fig, animate, farg = (kmeans,), interval=...)
+    # use as animation.FuncAnimation(fig, animate, farg=(kmeans,), interval=)
     if i == 0:
         kmeans.scatter_0.set_array(kmeans.labels)
         kmeans.plot_centers()
@@ -184,3 +187,17 @@ def update(i, kmeans: KMeans, output=True):
     if output:
         print(f"rendering frame {i}", end='\r')
     return (kmeans.scatter_0, kmeans.scatter_1)
+
+
+def plot_origin(labels, kmeans: KMeans, filepath):
+    ani_ax = kmeans.ax
+    fig1 = plt.figure()
+    ax1 = fig1.add_subplot()
+    ax1.set_xlim(ani_ax.get_xlim())
+    ax1.set_ylim(ani_ax.get_ylim())
+    ax1.scatter(kmeans.printdata[:, 0], kmeans.printdata[:, 1],
+                c=labels, cmap="viridis", marker='.', lw=0.5)
+    ax1.set_title("The original labels of iris dataset")
+    prepare(filepath)
+    fig1.savefig(filepath)
+    print(f"Save original labels plot to {filepath}")
