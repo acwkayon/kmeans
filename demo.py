@@ -90,11 +90,8 @@ def main():
                                     bitrate=1800)
 
     movie_path = join_path("examples/movie1.mp4")
-
     save_animation(ani, movie_path)
-
     mlask(begin="\n", end="\n")
-
     view(movie_path)
 
     ################################################################
@@ -124,12 +121,10 @@ def main():
                                     bitrate=1800)
 
     print("")
-
-    save_animation(ani, join_path("examples/movie2.mp4"))
-
+    movie_path = join_path("examples/movie2.mp4")
+    save_animation(ani, movie_path)
     mlask(begin="\n", end="\n")
-
-    view(join_path("examples/movie2.mp4"))
+    view(movie_path)
 
     ################################################################
     # Iris Showcase
@@ -160,13 +155,16 @@ def main():
                                   frames=50,
                                   fargs=(kmeans,),
                                   interval=500)
-#    writer = animation.FFMpegWriter(fps=30,
-#                                    metadata=dict(artist='Me'),
-#                                    bitrate=1800)
-    save_animation(ani, join_path("examples/iris.mp4"))
-    print("")
-    view(join_path("examples/iris.mp4"))
+    writer = animation.FFMpegWriter(fps=30,
+                                    metadata=dict(artist='Me'),
+                                    bitrate=1800)
 
+    movie_path = join_path("examples/iris.mp4")
+    save_animation(ani, movie_path)
+    print("")
+    view(movie_path)
+
+    movie_path = join_path("examples/iris.mp4")
     plot_origin(iris_labels, kmeans, join_path("examples/iris.png"))
     print("")
     view(join_path("examples/iris.png"))

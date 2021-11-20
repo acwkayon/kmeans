@@ -23,11 +23,12 @@ def prepare(filepath):
     Path(directory).mkdir(parents=True, exist_ok=True)
 
 
-def save_animation(ani, filepath, output=True):
+def save_animation(ani, filepath, verbose=True):
     # save animation to the filepath, no matter whether the place exist
+    print(filepath)
     prepare(filepath)
     ani.save(filepath)
-    if output:
+    if verbose:
         print(f"Save animation to {filepath}")
 
 
