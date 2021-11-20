@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 #
-# Time-stamp: <Saturday 2021-11-20 20:36:46 AEDT Graham Williams>
+# Time-stamp: <Saturday 2021-11-20 20:54:33 AEDT Graham Williams>
 #
 # Copyright (c) Gefei Shan, Graham Williams. All rights reserved.
 # Licensed under GPLv3
 # Authors: Gefei Chen, Graham.Williams@togaware.com
 #
 # MLHub demonstrator and toolkit for kmeans.
+
+import shutil
+import tempfile
 
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -36,6 +39,8 @@ def main():
 """
     mlcat(title="K-Means Algorithm Showcase", text=introduction)
 
+    tempdir = tempfile.mkdtemp()
+
     ################################################################
     # First Showcase
 
@@ -49,14 +54,12 @@ def main():
     ax.set_ylabel("income")
     kmeans.set_ax(ax)
 
-    fig_path = "examples/Initializing.png"
+    path = f"{tempdir}/Initializing.png"
 
-    fig.savefig(fig_path)
-
+    fig.savefig(path)
     mlask(begin="\n", end="\n",
           prompt="Press Enter to display the initial plot")
-
-    view(fig_path)
+    view(path)
 
     introduction_steps = """The algorithm iteratively applies the 2 steps:
 
@@ -92,7 +95,7 @@ def main():
                                   fargs=(kmeans,),
                                   interval=500)
 
-    path = "examples/movie1.mp4"
+    path = f"{tempdir}/movie1.mp4"
     save_animation(ani, path)
     mlask(begin="\n", end="\n", prompt="Press Enter to view the movie")
     view(path)
@@ -121,7 +124,7 @@ def main():
                                   interval=500)
 
     print("")
-    path = "examples/movie2.mp4"
+    path = f"{tempdir}/movie2.mp4"
     save_animation(ani, path)
     mlask(begin="\n", end="\n", prompt="Press Enter to view the movie")
     view(path)
@@ -156,7 +159,7 @@ def main():
     kmeans.set_ax(ax)
     print("")
 
-    path = "examples/iris.png"
+    path = f"{tempdir}/iris.png"
     plot_origin(iris_labels, kmeans, path)
     mlask(begin="\n", end="\n",
           prompt="Press Enter to display the iris dataset")
@@ -168,12 +171,14 @@ def main():
                                   fargs=(kmeans,),
                                   interval=500)
 
-    path = "examples/iris.mp4"
+    path = f"{tempdir}/iris.mp4"
     save_animation(ani, path)
     print("")
     view(path, ask=False)
 
     mlask(begin="\n", end="\n", prompt="Press Enter to Exit")
+
+    shutil.rmtree(tempdir)
 
 
 if __name__ == '__main__':
