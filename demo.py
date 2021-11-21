@@ -60,16 +60,10 @@ def main():
 
     path = f"{tempdir}/Initializing.png"
 
-<<<<<<< HEAD
-    mlask(begin="\n", end="\n")
-
-    view(join_path("examples/Initializing.png"))
-=======
     fig.savefig(path)
     mlask(begin="\n", end="\n",
           prompt="Press Enter to display the initial plot")
     view(path)
->>>>>>> a1107b5391f60a6cc9e0921253380b3579607315
 
     introduction_steps = """The algorithm iteratively applies the 2 steps:
 
