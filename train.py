@@ -2,14 +2,14 @@
 #
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Monday 2021-11-22 08:21:38 AEDT Graham Williams>
+# Time-stamp: <Monday 2021-11-22 08:40:49 AEDT Graham Williams>
 #
 # Authors: Gefei Shan, Graham.Williams@togaware.com
 # License: General Public License v3 GPLv3
 # License: https://www.gnu.org/licenses/gpl-3.0.en.html
 # Copyright: (c) Gefei Shan, Graham Williams. All rights reserved.
 
-
+import os
 import sys
 import click
 import tempfile
@@ -19,7 +19,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
-from mlhub.pkg import mlpreview
+from mlhub.pkg import mlpreview, get_cmd_cwd
 
 from utils import KMeans, update, save_animation
 
@@ -65,7 +65,7 @@ def cli(k, input, output, movie, view):
     header = ','.join(df.columns)
 
     # Build the animation.
-    print(movie)
+
     if view: #or not movie is None:
         print(view)
         fig, ax = plt.subplots()
@@ -79,6 +79,9 @@ def cli(k, input, output, movie, view):
             print("REMOVE MOVIE")
 
     # Output the model as a center per label, CSV format.
+
+    if output != sys.stdout:
+        os.chdir(get_cmd_cwd())
 
     labels = range(k)
     centers = pd.DataFrame(kmeans.centers)
