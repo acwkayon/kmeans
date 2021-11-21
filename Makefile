@@ -2,7 +2,7 @@
 #
 # Makefile for kmeans MLHub package
 #
-# Time-stamp: <Sunday 2021-11-21 20:21:49 AEDT Graham Williams>
+# Time-stamp: <Monday 2021-11-22 08:50:54 AEDT Graham Williams>
 #
 # Copyright (c) Graham.Williams@togaware.com
 #
@@ -66,5 +66,5 @@ test:
 	cat iris.csv | python train.py 3                                                                                                         
 	echo "" | python train.py 3
 
-demo:
-	python demo.py
+clean::
+	rm -f model.csv
