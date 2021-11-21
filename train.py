@@ -1,57 +1,85 @@
-# print("import requiring libraries")
-# For the format of output, all the print, mlask, mlcat and such output will be turn off
-import argparse
+# -*- coding: utf-8 -*-
+#
+# MLHub demonstrator and toolkit for kmeans.
+#
+# Time-stamp: <Sunday 2021-11-21 08:48:30 AEDT Graham Williams>
+#
+# Authors: Gefei Shan, Graham.Williams@togaware.com
+# License: General Public License v3 GPLv3
+# License: https://www.gnu.org/licenses/gpl-3.0.en.html
+# Copyright: (c) Gefei Shan, Graham Williams. All rights reserved.
+
+
 import sys
-import pathlib
-import os
+import click
+
 import pandas as pd
-from utils import KMeans, join_path, update, join_path, save_animation, view
+
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-from mlhub.pkg import mlask, mlcat, mlpreview
-import numpy as np
+
+from mlhub.pkg import mlpreview
+
+from utils import KMeans, update, save_animation
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument(
-    "k", type=int, help="the number of clusters for the algorithm")
-parser.add_argument("path", nargs="?", help="file(s), folder, or url to input, in the format of csv",
-                    type=argparse.FileType('r'), default=sys.stdin)
-parser.add_argument("-o", "--output", nargs="?", help="filepath for output, or will output to stdout",
-                    type=argparse.FileType('w'), default=sys.stdout)
-parser.add_argument(
-    "-v", "--view", help="with this option, will popout an video for visualisation", action="store_true")
-parser.add_argument("-s", "--savemovie", help="the path for movie save path",
-                    type=pathlib.Path, default=join_path("examples/train.mp4"))
-args = parser.parse_args()
+# Command line argument and options.
 
-k = args.k
-save_movie = os.path.abspath(args.savemovie)
-origin_out = sys.stdout
+@click.command()
+@click.argument("k", type=click.IntRange(2))
+@click.option("-i", "--input",
+              default=sys.stdin,
+              type=click.File('r'),
+              help="Filename of the CSV file to cluster, or from STDIN.")
+@click.option("-o", "--output",
+              default=sys.stdout,
+              type=click.File('w'),
+              help="Filename of the CSV file to save model, or to STDOUT.")
+@click.option("-m", "--movie",
+              type=click.Path(),
+              help="Filename of the movie file to save if desired.")
+@click.option("--view",
+              is_flag=True,
+              default=False,
+              help="Popup a movie viewer to visualise the algorithm.")
+def cli(k, input, output, movie, view):
+    """Train a k-means cluster model, output as centers and labels."""
 
-# redirect the output
-sys.stdout = args.output
+    # Construct a suitably structured dataset from iunput CSV file.
 
-df = pd.read_csv(args.path)
-data = df.to_numpy()
-fig, ax = plt.subplots()
-kmeans = KMeans(k, input_data=data, repeat_times=1, slience=True)
-kmeans.farest_center()
-fig, ax = plt.subplots()
-kmeans.set_ax(ax)
-ani = animation.FuncAnimation(
-    fig, update, frames=50, fargs=(kmeans, False,), interval=500)
-writer = animation.FFMpegWriter(
-    fps=30, metadata=dict(artist='Me'), bitrate=1800)
-save_animation(ani, save_movie, output=False)
-df["label"] = kmeans.labels
-header = ','.join(df.columns)
-if args.view:
-    # the mlpreview will call print(begin+prompt), which includes a '\n'
-    mlpreview(save_movie, begin="", msg=header)
-else:
-    print(header)
-center_labels = [f"center {i}" for i in range(k)]
-center_df = pd.DataFrame(kmeans.centers)
-center_df["label"] = center_labels
-print(center_df.to_csv(header=False, index=False, float_format='%.3f'))
+    try:
+        df = pd.read_csv(input)
+    except pd.errors.EmptyDataError:
+        click.echo("Exiting model training as no data is available.")
+        sys.exit(1)
+    data = df.to_numpy()
+
+    # Build the k-means model and animation.
+
+    kmeans = KMeans(k, input_data=data, repeat_times=1, slience=True)
+    kmeans.farest_center()
+    fig, ax = plt.subplots()
+    kmeans.set_ax(ax)
+    ani = animation.FuncAnimation(
+        fig, update, frames=50, fargs=(kmeans, False,), interval=500)
+    if view:
+        save_animation(ani, movie, verbose=False)
+
+    df["label"] = kmeans.labels
+    header = ','.join(df.columns)
+
+    if view:
+        mlpreview(movie, begin="", msg=header)
+
+    # Output the model as a center per label, CSV format.
+
+    labels = range(k)
+    centers = pd.DataFrame(kmeans.centers)
+    centers["label"] = labels
+    model = centers.to_csv(header=False, index=False, float_format='%.2f')
+    click.echo(header)
+    click.echo(model.strip())
+
+
+if __name__ == "__main__":
+    cli(prog_name="train")
