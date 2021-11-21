@@ -2,7 +2,7 @@
 #
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Sunday 2021-11-21 08:48:30 AEDT Graham Williams>
+# Time-stamp: <Monday 2021-11-22 08:21:38 AEDT Graham Williams>
 #
 # Authors: Gefei Shan, Graham.Williams@togaware.com
 # License: General Public License v3 GPLv3
@@ -12,6 +12,7 @@
 
 import sys
 import click
+import tempfile
 
 import pandas as pd
 
@@ -36,9 +37,11 @@ from utils import KMeans, update, save_animation
               type=click.File('w'),
               help="Filename of the CSV file to save model, or to STDOUT.")
 @click.option("-m", "--movie",
+              default="tmp.mp4",
+#             default=str(tempfile.NamedTemporaryFile(suffix=".mp4")),
               type=click.Path(),
               help="Filename of the movie file to save if desired.")
-@click.option("--view",
+@click.option("-v", "--view",
               is_flag=True,
               default=False,
               help="Popup a movie viewer to visualise the algorithm.")
@@ -54,22 +57,26 @@ def cli(k, input, output, movie, view):
         sys.exit(1)
     data = df.to_numpy()
 
-    # Build the k-means model and animation.
+    # Build the k-means model
 
     kmeans = KMeans(k, input_data=data, repeat_times=1, slience=True)
     kmeans.farest_center()
-    fig, ax = plt.subplots()
-    kmeans.set_ax(ax)
-    ani = animation.FuncAnimation(
-        fig, update, frames=50, fargs=(kmeans, False,), interval=500)
-    if view:
-        save_animation(ani, movie, verbose=False)
-
     df["label"] = kmeans.labels
     header = ','.join(df.columns)
 
-    if view:
-        mlpreview(movie, begin="", msg=header)
+    # Build the animation.
+    print(movie)
+    if view: #or not movie is None:
+        print(view)
+        fig, ax = plt.subplots()
+        kmeans.set_ax(ax)
+        ani = animation.FuncAnimation(
+            fig, update, frames=50, fargs=(kmeans, False,), interval=500)
+        save_animation(ani, movie, verbose=False)
+        if view:
+            mlpreview(movie, begin="", msg=header)
+        if movie:
+            print("REMOVE MOVIE")
 
     # Output the model as a center per label, CSV format.
 
@@ -77,8 +84,8 @@ def cli(k, input, output, movie, view):
     centers = pd.DataFrame(kmeans.centers)
     centers["label"] = labels
     model = centers.to_csv(header=False, index=False, float_format='%.2f')
-    click.echo(header)
-    click.echo(model.strip())
+    click.echo(header, output)
+    click.echo(model.strip(), output)
 
 
 if __name__ == "__main__":
