@@ -2,7 +2,7 @@
 #
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Monday 2021-11-22 16:52:46 AEDT Graham Williams>
+# Time-stamp: <Monday 2021-11-22 17:01:15 AEDT Graham Williams>
 #
 # Authors: Gefei Shan, Graham.Williams@togaware.com
 # License: General Public License v3 GPLv3
@@ -62,6 +62,10 @@ def cli(k, input, output, movie, view):
     df["label"] = kmeans.labels
     header = ','.join(df.columns)
 
+    # Ensure output is to the user's cwd.
+
+    os.chdir(get_cmd_cwd())
+
     # Build the animation, view it and/or save it.
 
     if movie is None:
@@ -81,9 +85,6 @@ def cli(k, input, output, movie, view):
             mlpreview(movie, begin="", msg=header)
 
     # Output the model as a center per label, CSV format.
-
-    if output != sys.stdout:
-        os.chdir(get_cmd_cwd())
 
     labels = range(k)
     centers = pd.DataFrame(kmeans.centers)
