@@ -2,7 +2,7 @@
 #
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Monday 2021-11-22 16:50:49 AEDT Graham Williams>
+# Time-stamp: <Monday 2021-11-22 16:52:46 AEDT Graham Williams>
 #
 # Authors: Gefei Shan, Graham.Williams@togaware.com
 # License: General Public License v3 GPLv3
@@ -62,7 +62,7 @@ def cli(k, input, output, movie, view):
     df["label"] = kmeans.labels
     header = ','.join(df.columns)
 
-    # Build the animation and view it and/or save it.
+    # Build the animation, view it and/or save it.
 
     if movie is None:
         save_movie = False
