@@ -2,7 +2,7 @@
 #
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Monday 2021-11-22 08:40:49 AEDT Graham Williams>
+# Time-stamp: <Monday 2021-11-22 16:50:49 AEDT Graham Williams>
 #
 # Authors: Gefei Shan, Graham.Williams@togaware.com
 # License: General Public License v3 GPLv3
@@ -37,8 +37,6 @@ from utils import KMeans, update, save_animation
               type=click.File('w'),
               help="Filename of the CSV file to save model, or to STDOUT.")
 @click.option("-m", "--movie",
-              default="tmp.mp4",
-#             default=str(tempfile.NamedTemporaryFile(suffix=".mp4")),
               type=click.Path(),
               help="Filename of the movie file to save if desired.")
 @click.option("-v", "--view",
@@ -64,10 +62,16 @@ def cli(k, input, output, movie, view):
     df["label"] = kmeans.labels
     header = ','.join(df.columns)
 
-    # Build the animation.
+    # Build the animation and view it and/or save it.
 
-    if view: #or not movie is None:
-        print(view)
+    if movie is None:
+        save_movie = False
+        with tempfile.TemporaryDirectory() as tmp:
+            movie = os.path.join(tmp, 'mlhub_kmeans_movie.mp4')
+    else:
+        save_movie = True
+
+    if view or save_movie:
         fig, ax = plt.subplots()
         kmeans.set_ax(ax)
         ani = animation.FuncAnimation(
@@ -75,8 +79,6 @@ def cli(k, input, output, movie, view):
         save_animation(ani, movie, verbose=False)
         if view:
             mlpreview(movie, begin="", msg=header)
-        if movie:
-            print("REMOVE MOVIE")
 
     # Output the model as a center per label, CSV format.
 
