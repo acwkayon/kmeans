@@ -2,7 +2,7 @@
 #
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Monday 2021-11-22 17:01:15 AEDT Graham Williams>
+# Time-stamp: <Thursday 2021-12-16 08:00:53 AEDT Graham Williams>
 #
 # Authors: Gefei Shan, Graham.Williams@togaware.com
 # License: General Public License v3 GPLv3
@@ -27,7 +27,11 @@ from utils import KMeans, update, save_animation
 # Command line argument and options.
 
 @click.command()
-@click.argument("k", type=click.IntRange(2))
+@click.argument("k",
+                type=click.IntRange(2))
+@click.argument("filename",
+                default=sys.stdin,
+                type=click.Path(exists=True, readable=True))
 @click.option("-i", "--input",
               default=sys.stdin,
               type=click.File('r'),
