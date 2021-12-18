@@ -19,7 +19,7 @@ df_data = pd.read_csv(args.csvfile) # datafile
 if "labels" in df_centers.columns:
     df_centers["label"] = df_centers["labels"]
     df_centers = df_centers.drop(columns="labels")
-df_centers["label"] = df_centers["label"].str.replace("center", "").str.strip()
+
 df_centers.sort_values(by="label", inplace=True)
 centers = df_centers.drop(columns="label").to_numpy()
 label_index = df_centers["label"]
@@ -41,4 +41,4 @@ origin_out = sys.stdout
 # redirect the output
 sys.stdout = args.output
 
-print(df_data.to_csv(index = False))
+print(df_data.to_csv(index = False).strip())
