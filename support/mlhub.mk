@@ -54,7 +54,9 @@ demo:
 
 .PHONY: mllocal
 mllocal:
-	if [ -n "$(PKG)" ]; then install --mode="u=rw,g=r,o=" $(PKG) $(MLHUB_HOME); fi
+	if [ -n "$(PKG)" ]; then \
+	  install --mode="u=rw,g=r,o=" $(PKG) $(MLHUB_HOME); \
+	fi
 
 .PHONY: mltest mlinstall mlconfigure mlreadme mldemo mluninstall
 mltest: mlinstall mlconfigure mlreadme mldemo mluninstall
