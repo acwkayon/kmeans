@@ -2,7 +2,7 @@
 #
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Thursday 2021-12-16 08:00:53 AEDT Graham Williams>
+# Time-stamp: <Saturday 2021-12-18 15:20:50 AEDT Graham Williams>
 #
 # Authors: Gefei Shan, Graham.Williams@togaware.com
 # License: General Public License v3 GPLv3
@@ -31,11 +31,11 @@ from utils import KMeans, update, save_animation
                 type=click.IntRange(2))
 @click.argument("filename",
                 default=sys.stdin,
-                type=click.Path(exists=True, readable=True))
-@click.option("-i", "--input",
-              default=sys.stdin,
-              type=click.File('r'),
-              help="Filename of the CSV file to cluster, or from STDIN.")
+                type=click.File('r')) # Path(exists=True, readable=True))
+#@click.option("-i", "--input",
+#              default=sys.stdin,
+#              type=click.File('r'),
+#              help="Filename of the CSV file to cluster, or from STDIN.")
 @click.option("-o", "--output",
               default=sys.stdout,
               type=click.File('w'),
@@ -47,13 +47,13 @@ from utils import KMeans, update, save_animation
               is_flag=True,
               default=False,
               help="Popup a movie viewer to visualise the algorithm.")
-def cli(k, input, output, movie, view):
+def cli(k, filename, output, movie, view):
     """Train a k-means cluster model, output as centers and labels."""
 
     # Construct a suitably structured dataset from iunput CSV file.
 
     try:
-        df = pd.read_csv(input)
+        df = pd.read_csv(filename)
     except pd.errors.EmptyDataError:
         click.echo("Exiting model training as no data is available.")
         sys.exit(1)

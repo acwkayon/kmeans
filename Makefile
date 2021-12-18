@@ -2,7 +2,7 @@
 #
 # Makefile for kmeans MLHub package
 #
-# Time-stamp: <Monday 2021-11-22 08:50:54 AEDT Graham Williams>
+# Time-stamp: <Saturday 2021-12-18 15:23:05 AEDT Graham Williams>
 #
 # Copyright (c) Graham.Williams@togaware.com
 #
@@ -25,7 +25,7 @@ DATE=$(shell date +%Y-%m-%d)
 # Often the support Makefiles will be in the local support folder, or
 # else installed in the local user's shares.
 
-INC_BASE=$(HOME)/.local/share/make
+INC_BASE=support
 
 # Specific Makefiles will be loaded if they are found in
 # INC_BASE. Sometimes the INC_BASE is shared by multiple local
