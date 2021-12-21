@@ -1,15 +1,26 @@
-import argparse
+# import argparse -- no longer used
 import sys
 import pandas as pd
 import numpy as np
+import click
 
-parser = argparse.ArgumentParser()
-parser.add_argument("-o", "--output", help="Save the output predictions to file.",
-                    nargs="?", type=argparse.FileType('w'), default=sys.stdout)
-parser.add_argument("modelfile", help="the model file for predictions, in csv format",
-                    nargs="?", type=argparse.FileType('r'), default=sys.stdin)
-parser.add_argument(
-    "csvfile", help="the input data file, in csv format", type=argparse.FileType('r'))
+# Previously used argsparse: 
+# parser = argparse.ArgumentParser()
+# parser.add_argument("-o", "--output", help="Save the output predictions to file.",
+#                     nargs="?", type=argparse.FileType('w'), default=sys.stdout)
+# parser.add_argument("modelfile", help="the model file for predictions, in csv format",
+#                     nargs="?", type=argparse.FileType('r'), default=sys.stdin)
+# parser.add_argument(
+#     "csvfile", help="the input data file, in csv format", type=argparse.FileType('r'))
+
+# Use click instead of argsparse
+@click.command()
+@click.argument("-o", "--output", help="Save the output predictions to file.",
+                    nargs="?", type=click.File('w'), default=sys.stdout)
+@click.argument("modelfile", help="the model file for predictions, in csv format",
+                    nargs="?", type=click.File('r'), default=sys.stdin)
+@click.argument(
+    "csvfile", help="the input data file, in csv format", type=click.File('r'))
 
 args = parser.parse_args()
 
