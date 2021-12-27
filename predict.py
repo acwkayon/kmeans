@@ -7,6 +7,7 @@ import numpy as np
 
 from mlhub.pkg import get_cmd_cwd
 
+os.chdir(get_cmd_cwd())
 
 @click.command()
 @click.argument('modelfile', 
@@ -22,7 +23,6 @@ from mlhub.pkg import get_cmd_cwd
             help="Save the output predictions to file.")
 def cli(modelfile, csvfile, output):
    
-    os.chdir(get_cmd_cwd())
 
     try:
         df = pd.read_csv(csvfile)
