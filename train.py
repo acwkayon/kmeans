@@ -24,6 +24,10 @@ from mlhub.pkg import mlpreview, get_cmd_cwd
 from utils import KMeans, update, save_animation
 
 
+# Ensure paths are relative to the user's cwd.
+
+os.chdir(get_cmd_cwd())
+
 # Command line argument and options.
 
 @click.command()
@@ -45,10 +49,6 @@ from utils import KMeans, update, save_animation
               help="Popup a movie viewer to visualise the algorithm.")
 def cli(k, filename, output, movie, view):
     """Train a k-means cluster model, output as centers and labels."""
-
-    # Ensure paths are relative to the user's cwd.
-
-    os.chdir(get_cmd_cwd())
 
     # Construct a suitably structured dataset from iunput CSV file.
 
