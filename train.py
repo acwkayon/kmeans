@@ -24,6 +24,10 @@ from mlhub.pkg import mlpreview, get_cmd_cwd
 from utils import KMeans, update, save_animation
 
 
+# Ensure paths are relative to the user's cwd.
+
+os.chdir(get_cmd_cwd())
+
 # Command line argument and options.
 
 @click.command()
@@ -31,11 +35,7 @@ from utils import KMeans, update, save_animation
                 type=click.IntRange(2))
 @click.argument("filename",
                 default=sys.stdin,
-                type=click.File('r')) # Path(exists=True, readable=True))
-#@click.option("-i", "--input",
-#              default=sys.stdin,
-#              type=click.File('r'),
-#              help="Filename of the CSV file to cluster, or from STDIN.")
+                type=click.File('r'))  # Path(exists=True, readable=True))
 @click.option("-o", "--output",
               default=sys.stdout,
               type=click.File('w'),
@@ -65,10 +65,6 @@ def cli(k, filename, output, movie, view):
     kmeans.farest_center()
     df["label"] = kmeans.labels
     header = ','.join(df.columns)
-
-    # Ensure output is to the user's cwd.
-
-    os.chdir(get_cmd_cwd())
 
     # Build the animation, view it and/or save it.
 
