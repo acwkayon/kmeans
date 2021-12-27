@@ -1,29 +1,21 @@
-# import argparse -- no longer used
 import sys
 import pandas as pd
 import numpy as np
 import click
 
-# Previously used argsparse: 
-# parser = argparse.ArgumentParser()
-# parser.add_argument("-o", "--output", help="Save the output predictions to file.",
-#                     nargs="?", type=argparse.FileType('w'), default=sys.stdout)
-# parser.add_argument("modelfile", help="the model file for predictions, in csv format",
-#                     nargs="?", type=argparse.FileType('r'), default=sys.stdin)
-# parser.add_argument(
-#     "csvfile", help="the input data file, in csv format", type=argparse.FileType('r'))
-# args = parser.parse_args()
 
-# Use click instead of argsparse
 @click.command()
-
-@click.argument('modelfile', type=click.File('r'), default=sys.stdin)
+@click.argument('modelfile', 
+                type=click.File('r'), 
+                default=sys.stdin)
 # removed help="the model file for predictions, in csv format",
-@click.argument('csvfile', type=click.File('r'), default=sys.stdin)
+@click.argument('csvfile', 
+                type=click.File('r'), 
+                default=sys.stdin)
 # removed  help="the input data file, in csv format",
-
-@click.option('--output', default=sys.stdout,type=click.File('w'), help="Save the output predictions to file.")
-
+@click.option('-o', '--output', 
+            default=sys.stdout,type=click.File('w'), 
+            help="Save the output predictions to file.")
 def cli(modelfile, csvfile, output):
    
     try:
@@ -34,9 +26,9 @@ def cli(modelfile, csvfile, output):
     data = df.to_numpy()
 
 
-    df_centers = pd.read_csv(modelfile) # modelfile, the centers of clusters
+    df_centers = pd.read_csv(modelfile, header=1) # modelfile, the centers of clusters
     #df_data = pd.read_csv(csvfile) # might not need to read twice
-
+    
     if "labels" in df_centers.columns:
         df_centers["label"] = df_centers["labels"]
         df_centers = df_centers.drop(columns="labels")
@@ -50,7 +42,7 @@ def cli(modelfile, csvfile, output):
     data = df.to_numpy()
     n = data.shape[0]
     distance = np.zeros([n, k])
-
+    
     # calculate distance and assign labels
     for j, c in enumerate(centers):
         
@@ -65,7 +57,6 @@ def cli(modelfile, csvfile, output):
     sys.stdout = output
 
     print(df.to_csv(index = False).strip())
-    click.echo(output)
 
 
 # copying from train.py, not sure about this yet:
