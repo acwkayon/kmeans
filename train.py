@@ -46,6 +46,10 @@ from utils import KMeans, update, save_animation
 def cli(k, filename, output, movie, view):
     """Train a k-means cluster model, output as centers and labels."""
 
+    # Ensure paths are relative to the user's cwd.
+
+    os.chdir(get_cmd_cwd())
+
     # Construct a suitably structured dataset from iunput CSV file.
 
     try:
@@ -61,10 +65,6 @@ def cli(k, filename, output, movie, view):
     kmeans.farest_center()
     df["label"] = kmeans.labels
     header = ','.join(df.columns)
-
-    # Ensure output is to the user's cwd.
-
-    os.chdir(get_cmd_cwd())
 
     # Build the animation, view it and/or save it.
 
