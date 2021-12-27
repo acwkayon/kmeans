@@ -53,7 +53,7 @@ def cli(modelfile, csvfile, output):
 
     # calculate distance and assign labels
     for j, c in enumerate(centers):
-        print('starting for loop')
+        
         distance[:, j] = np.linalg.norm(data - c, axis=1)
     new_labels = np.argmin(distance, axis=1)
     df_labels = pd.Series(data=new_labels).map(label_index.to_dict()) # map labels from 0,...,k-1 to the provided label string
