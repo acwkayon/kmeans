@@ -31,11 +31,7 @@ from utils import KMeans, update, save_animation
                 type=click.IntRange(2))
 @click.argument("filename",
                 default=sys.stdin,
-                type=click.File('r')) # Path(exists=True, readable=True))
-#@click.option("-i", "--input",
-#              default=sys.stdin,
-#              type=click.File('r'),
-#              help="Filename of the CSV file to cluster, or from STDIN.")
+                type=click.File('r'))  # Path(exists=True, readable=True))
 @click.option("-o", "--output",
               default=sys.stdout,
               type=click.File('w'),
