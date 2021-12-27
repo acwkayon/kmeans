@@ -22,8 +22,8 @@ from mlhub.pkg import get_cmd_cwd
             help="Save the output predictions to file.")
 def cli(modelfile, csvfile, output):
    
-    os.chdir(get_cmd_cwd())
-    
+    os.chdir(os.getcwd())
+
     try:
         df = pd.read_csv(csvfile)
     except pd.errors.EmptyDataError:
@@ -63,6 +63,7 @@ def cli(modelfile, csvfile, output):
     sys.stdout = output
 
     print(df.to_csv(index = False).strip())
+
 
 
 # copying from train.py, not sure about this yet:
