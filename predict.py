@@ -1,7 +1,11 @@
+import os
 import sys
+import click
+
 import pandas as pd
 import numpy as np
-import click
+
+from mlhub.pkg import get_cmd_cwd
 
 
 @click.command()
@@ -18,6 +22,8 @@ import click
             help="Save the output predictions to file.")
 def cli(modelfile, csvfile, output):
    
+    os.chdir(get_cmd_cwd())
+
     try:
         df = pd.read_csv(csvfile)
     except pd.errors.EmptyDataError:
