@@ -16,14 +16,16 @@ import click
 
 # Use click instead of argsparse
 @click.command()
-@click.argument('-o', type=click.File('w'), default=sys.stdout)
-# appanrently Click won't let you add help to click.argument, removed help="Save the output predictions to file.",
+
 @click.argument('modelfile', type=click.File('r'), default=sys.stdin)
 # removed help="the model file for predictions, in csv format",
-@click.argument('csvfile', type=click.File('r'))
+@click.argument('csvfile', type=click.File('r'), default=sys.stdin)
 # removed  help="the input data file, in csv format",
 
-def cli(o, modelfile, csvfile):
+@click.option('--output', default=sys.stdout,type=click.File('w'), help="Save the output predictions to file.")
+
+def cli(modelfile, csvfile, output):
+   
     try:
         df = pd.read_csv(csvfile)
     except pd.errors.EmptyDataError:
@@ -39,6 +41,7 @@ def cli(o, modelfile, csvfile):
         df_centers["label"] = df_centers["labels"]
         df_centers = df_centers.drop(columns="labels")
 
+    
     df_centers.sort_values(by="label", inplace=True)
     centers = df_centers.drop(columns="label").to_numpy()
     label_index = df_centers["label"]
@@ -50,6 +53,7 @@ def cli(o, modelfile, csvfile):
 
     # calculate distance and assign labels
     for j, c in enumerate(centers):
+        print('starting for loop')
         distance[:, j] = np.linalg.norm(data - c, axis=1)
     new_labels = np.argmin(distance, axis=1)
     df_labels = pd.Series(data=new_labels).map(label_index.to_dict()) # map labels from 0,...,k-1 to the provided label string
@@ -61,6 +65,7 @@ def cli(o, modelfile, csvfile):
     sys.stdout = output
 
     print(df_data.to_csv(index = False).strip())
+    click.echo(output)
 
 
 # copying from train.py, not sure about this yet:
