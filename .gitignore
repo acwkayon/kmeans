@@ -4,3 +4,5 @@ cache
 __pycache__
 test_outcsv.py
 out.csv
+model.csv
+.vscode/settings.json
