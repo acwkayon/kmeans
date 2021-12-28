@@ -30,6 +30,7 @@ os.chdir(get_cmd_cwd())
 
 # Command line argument and options.
 
+
 @click.command()
 @click.argument("k",
                 type=click.IntRange(2))
@@ -82,7 +83,7 @@ def cli(k, filename, output, movie, view):
             fig, update, frames=50, fargs=(kmeans, False,), interval=500)
         save_animation(ani, movie, verbose=False)
         if view:
-            mlpreview(movie, begin="", msg=header)
+            mlpreview(movie, begin="", msg="")
 
     # Output the model as a center per label, CSV format.
 
