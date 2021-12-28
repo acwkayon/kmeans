@@ -64,8 +64,10 @@ class KMeans:
         self.distance = np.zeros([self.data.shape[0], k], dtype=np.float64)
         # self.calculate_centers()
         self.select_centers()
-        self.converge = -10  # the frames would still remain after the algorithm converge
-        self.converge_times = 0  # count the times the algorithm already converged
+        # the frames would still remain after the algorithm converge
+        self.converge = -10
+        # count the times the algorithm already converged
+        self.converge_times = 0
         self.repeat_times = repeat_times  # the times the algorithm will repeat
         self.init_cm()
 
