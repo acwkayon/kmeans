@@ -52,7 +52,7 @@ def cli(modelfile, csvfile, output):
     data = df.to_numpy()
 
     # modelfile, the centers of clusters
-    df_centers = pd.read_csv(modelfile, header=0)
+    df_centers = pd.read_csv(modelfile)
     if "labels" in df_centers.columns:
         df_centers["label"] = df_centers["labels"]
         df_centers = df_centers.drop(columns="labels")
