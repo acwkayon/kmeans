@@ -34,9 +34,6 @@ os.chdir(get_cmd_cwd())
                 type=click.File('r'),
                 default=sys.stdin)  
 # help="model file for predictions, in csv format"
-@click.option('-o', '--output',
-              default=sys.stdout,type=click.File('w'), 
-              help="Save the output predictions to file.")
 
 def cli(modelfile, csvfile, output):
 
