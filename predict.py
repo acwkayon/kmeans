@@ -18,18 +18,22 @@ import numpy as np
 
 from mlhub.pkg import get_cmd_cwd
 
+# Ensure paths are relative to the user's cwd.
+
+os.chdir(get_cmd_cwd())
+
 # Command line argument and options.
 
 
 @click.command()
-@click.argument('modelfile',
-                type=click.File('r'),
-                default=sys.stdin)  
-# help="model file for predictions, in csv format"
 @click.argument('csvfile',
                 type=click.File('r'),
                 default=sys.stdin) 
 # help="the input data file, in csv format"
+@click.argument('modelfile',
+                type=click.File('r'),
+                default=sys.stdin)  
+# help="model file for predictions, in csv format"
 @click.option('-o', '--output',
               default=sys.stdout,type=click.File('w'), 
               help="Save the output predictions to file.")
@@ -48,7 +52,7 @@ def cli(modelfile, csvfile, output):
     data = df.to_numpy()
 
     # modelfile, the centers of clusters
-    df_centers = pd.read_csv(modelfile, header=1)
+    df_centers = pd.read_csv(modelfile, header=0)
     if "labels" in df_centers.columns:
         df_centers["label"] = df_centers["labels"]
         df_centers = df_centers.drop(columns="labels")
