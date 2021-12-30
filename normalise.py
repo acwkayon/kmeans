@@ -1,6 +1,6 @@
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Thursday 2021-12-30 16:56:28 +1100 Graham Williams>
+# Time-stamp: <Thursday 2021-12-30 17:05:49 AEDT Graham Williams>
 #
 # Authors: Anita@togaware.com
 # License: General Public License v3 GPLv3
@@ -12,7 +12,6 @@ import sys
 import click
 
 import pandas as pd
-import numpy as np
 
 from mlhub.pkg import get_cmd_cwd
 
