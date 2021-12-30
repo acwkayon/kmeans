@@ -1,6 +1,6 @@
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Thursday 2021-12-30 16:47:44 +1100 Graham Williams>
+# Time-stamp: <Thursday 2021-12-30 16:56:28 +1100 Graham Williams>
 #
 # Authors: Anita@togaware.com
 # License: General Public License v3 GPLv3
@@ -15,6 +15,10 @@ import pandas as pd
 import numpy as np
 
 from mlhub.pkg import get_cmd_cwd
+
+# Constants
+
+ROUND = 3  # Number of decimal points to round to.
 
 # Ensure paths are relative to the user's cwd.
 
@@ -40,8 +44,8 @@ def cli(csvfile):
 
     for column in df.columns:
         df[column] = (df[column] - df[column].mean()) / df[column].std()
-    
-    click.echo(df.to_csv(index=False))
+
+    click.echo(df.round(ROUND).to_csv(index=False))
 
 
 if __name__ == "__main__":
