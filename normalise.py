@@ -1,6 +1,6 @@
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Thursday 2021-12-30 16:44:08 +1100 Graham Williams>
+# Time-stamp: <Thursday 2021-12-30 16:47:44 +1100 Graham Williams>
 #
 # Authors: Anita@togaware.com
 # License: General Public License v3 GPLv3
@@ -36,14 +36,12 @@ def cli(csvfile):
         click.echo("No data available.")
         sys.exit(1)
 
-    df_std = df.copy()
-
     # Apply the z-score method.
 
-    for column in df_std.columns:
-        df_std[column] = (df_std[column] - df_std[column].mean()) / df_std[column].std()
+    for column in df.columns:
+        df[column] = (df[column] - df[column].mean()) / df[column].std()
     
-    click.echo(df_std.to_csv(index=False))
+    click.echo(df.to_csv(index=False))
 
 
 if __name__ == "__main__":
