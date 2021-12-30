@@ -1,6 +1,6 @@
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Thursday 2021-12-30 17:05:49 AEDT Graham Williams>
+# Time-stamp: <Thu 2021-12-30 11:14:53 -0500 Anita Williams>
 #
 # Authors: Anita@togaware.com
 # License: General Public License v3 GPLv3
@@ -39,7 +39,8 @@ def cli(csvfile):
         click.echo("No data available.")
         sys.exit(1)
 
-    # Apply the z-score method.
+    # Apply the z-score method
+    # https://towardsdatascience.com/data-normalization-with-pandas-and-scikit-learn-7c1cc6ed6475
 
     for column in df.columns:
         df[column] = (df[column] - df[column].mean()) / df[column].std()
