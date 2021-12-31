@@ -1,6 +1,6 @@
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Thu 2021-12-30 11:14:53 -0500 Anita Williams>
+# Time-stamp: <Friday 2021-12-31 11:48:38 +1100 Graham Williams>
 #
 # Authors: Anita@togaware.com
 # License: General Public License v3 GPLv3
@@ -45,7 +45,7 @@ def cli(csvfile):
     for column in df.columns:
         df[column] = (df[column] - df[column].mean()) / df[column].std()
 
-    click.echo(df.round(ROUND).to_csv(index=False))
+    click.echo(df.round(ROUND).to_csv(index=False).strip())
 
 
 if __name__ == "__main__":
