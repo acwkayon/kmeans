@@ -1,4 +1,4 @@
-![Build Status](https://github.com/acwkayon/kmeans/workflows/python-app/badge.svg)
+![Build Status](https://github.com/acwkayon/kmeans/actions/workflows/python-app/badge.svg)
 
 # Showcase K-Means Algorithm
 
