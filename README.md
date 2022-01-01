@@ -1,5 +1,5 @@
 [![License:GPLv3](https://img.shields.io/badge/License-GPLv3-orange.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
-[![Build Status](https://github.com/acwkayon/kmeans/actions/workflows/build.yml/badge.svg)](https://github.com/acwkayon/kmeans/actions/workflows/build.yml)
+[![Build](https://github.com/acwkayon/kmeans/actions/workflows/build.yml/badge.svg)](https://github.com/acwkayon/kmeans/actions/workflows/build.yml)
 
 # Showcase K-Means Algorithm
 
