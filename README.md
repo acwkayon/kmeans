@@ -1,3 +1,5 @@
+![Build Status](https://github.com/acwkayon/kmeans/workflows/python-app/badge.svg)
+
 # Showcase K-Means Algorithm
 
 A k-means toolkit with animation demos.
