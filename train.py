@@ -2,7 +2,7 @@
 #
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Sunday 2022-01-02 17:11:09 +1100 Graham Williams>
+# Time-stamp: <Sunday 2022-01-02 17:13:21 +1100 Graham Williams>
 #
 # Authors: Gefei Shan, Graham.Williams@togaware.com
 # License: General Public License v3 GPLv3
@@ -49,13 +49,15 @@ os.chdir(get_cmd_cwd())
               default=False,
               help="Popup a movie viewer to visualise the algorithm.")
 def cli(k, filename, output, movie, view):
-    """Train a k-means cluster model with K specified as the number
-of clusters and optionally a FILENAME, which defaults to stdin, and
-is a csv file of named numeric columns.
+    """Train a k-means cluster model with K specified as the number of
+clusters and optionally a FILENAME, which defaults to stdin, and is a
+csv file of named numeric columns, generally expected to be
+normalised.
 
 The output is a k-means cluster model represented as a csv file with each
 of the k-means (the centers) on a single line, together with a uique label
 to identify the cluster.
+
     """
 
     # Construct a suitably structured dataset from iunput CSV file.
