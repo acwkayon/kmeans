@@ -1,6 +1,6 @@
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Friday 2021-12-31 09:28:36 +1100 Graham Williams>
+# Time-stamp: <Sunday 2022-01-02 17:18:31 +1100 Graham Williams>
 #
 # Authors: Gefei Shan, Anita@togaware.com
 # License: General Public License v3 GPLv3
@@ -34,7 +34,19 @@ os.chdir(get_cmd_cwd())
                 type=click.File('r'),
                 default=sys.stdin)
 def cli(modelfile, csvfile):
+    """Apply model to datafile.
 
+A CSVFILE is expected as input, with named numeric columns. The
+MODELFILE is a csv file of the same named numeric columns, with the
+addition of a label column, with each row representing a cluster
+centroid. If no MODELFILE is provided then the model is read from
+stdin.
+
+The output to stdout is the same CSVFILE file with an additional
+column, named label, as the cluster whose centroid is closest in
+distance to the row's observations.
+    """
+    
     # The datafile for predicting from is required.
 
     df = pd.read_csv(csvfile)
