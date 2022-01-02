@@ -1,6 +1,6 @@
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Sunday 2022-01-02 17:18:31 +1100 Graham Williams>
+# Time-stamp: <Sunday 2022-01-02 17:20:37 +1100 Graham Williams>
 #
 # Authors: Gefei Shan, Anita@togaware.com
 # License: General Public License v3 GPLv3
@@ -22,34 +22,31 @@ os.chdir(get_cmd_cwd())
 
 
 # Command line interface, arguments and options.
-#
-# CSVFILE is required and is the data to be predicted from.
-# MODELFILE is required but can be obtained from stdin.
 
 
 @click.command()
-@click.argument('csvfile',
+@click.argument('datafile',
                 type=click.File('r'))
 @click.argument('modelfile',
                 type=click.File('r'),
                 default=sys.stdin)
-def cli(modelfile, csvfile):
+def cli(modelfile, datafile):
     """Apply model to datafile.
 
-A CSVFILE is expected as input, with named numeric columns. The
+A DATAFILE is expected as input, with named numeric columns. The
 MODELFILE is a csv file of the same named numeric columns, with the
 addition of a label column, with each row representing a cluster
 centroid. If no MODELFILE is provided then the model is read from
 stdin.
 
-The output to stdout is the same CSVFILE file with an additional
+The output to stdout is the same DATAFILE file with an additional
 column, named label, as the cluster whose centroid is closest in
 distance to the row's observations.
     """
-    
+
     # The datafile for predicting from is required.
 
-    df = pd.read_csv(csvfile)
+    df = pd.read_csv(datafile)
     data = df.to_numpy()
 
     # The modelfile is required and records the centers of clusters. The
