@@ -1,6 +1,6 @@
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Wed 2022-02-09 18:50:56 -0800 Anita Williams>
+# Time-stamp: <Thu 2022-02-10 16:57:46 -0800 Anita Williams>
 #
 # Authors: Anita@togaware.com
 # License: General Public License v3 GPLv3
@@ -26,8 +26,15 @@ os.chdir(get_cmd_cwd())
 @click.argument('csvfile',
                 type=click.File('r'),
                 default=sys.stdin)
+@click.option("-l", "--label",
+              default="label",
+              help="identify the header for the column that contains the label")
 
-def cli(csvfile):
+
+
+def cli(csvfile, label):
+
+      
       # Quit if there is no data to read
       try:
         df = pd.read_csv(csvfile)
@@ -35,16 +42,24 @@ def cli(csvfile):
         click.echo("No data available.")
         sys.exit(1)
 
-      # Line of dots is data is one dimension
+      df.rename(columns={label: "label"}, inplace = True)
+      
+      # Line of dots if data is one dimension
+      
       if len(df.columns) == 2:
+            # Find the non-label column
             header_1_col = list(df.columns.values)
+            header_1_col.remove('label')
             print(ggplot(df) +
-            aes(x=header_1_col[0], y="label", color="factor(label)") +
+            aes(x=header_1_col[0], y='label', color="factor(label)") +
             geom_point())
       
       # Scatter plot if data is two dimensions
       elif len(df.columns) == 3:
+            
+            # Find the non-label columns
             header_2_col = list(df.columns.values)
+            header_2_col.remove('label')
             print(ggplot(df) +
             aes(x=header_2_col[0], y=header_2_col[1], color="factor(label)") +
             geom_point())
