@@ -6,7 +6,7 @@ meta:
   version      : 0.3.0
   languages    : py
   license      : gpl3
-  author       : Gefei Shan, Graham Williams
+  author       : Gefei Shan, Graham Williams, Anita Williams
   url          : https://github.com/gjwgit/kmeans
 dependencies:
   system:

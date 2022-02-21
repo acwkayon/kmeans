@@ -1,6 +1,6 @@
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Sunday 2022-01-02 17:20:37 +1100 Graham Williams>
+# Time-stamp: <Monday 2022-01-03 09:02:34 +1100 Graham Williams>
 #
 # Authors: Gefei Shan, Anita@togaware.com
 # License: General Public License v3 GPLv3
@@ -31,17 +31,25 @@ os.chdir(get_cmd_cwd())
                 type=click.File('r'),
                 default=sys.stdin)
 def cli(modelfile, datafile):
-    """Apply model to datafile.
+    """Apply MODELFILE to DATAFILE.
 
-A DATAFILE is expected as input, with named numeric columns. The
-MODELFILE is a csv file of the same named numeric columns, with the
-addition of a label column, with each row representing a cluster
-centroid. If no MODELFILE is provided then the model is read from
-stdin.
+DATAFILE is required. It is a CSV file with named numeric columns that
+match those of the MODELFILE, except for the absence of a label
+column.
 
-The output to stdout is the same DATAFILE file with an additional
-column, named label, as the cluster whose centroid is closest in
-distance to the row's observations.
+MODELFILE is optional and is STDIN if not provided. It is a CSV file
+of the same named numeric columns, with the addition of a label
+column. Each row in the MODELFILE represents a cluster centroid for
+the K clusters output by the train command.
+
+If no MODELFILE is provided then the model is read from stdin,
+allowing the output of the TRAIN command to be piped to the input of
+this predict command.
+
+The output to STDOUT is the same DATAFILE file with an additional
+column, named label, as the cluster whose centroid from the MODELFILE
+is closest in distance to the row's observations.
+
     """
 
     # The datafile for predicting from is required.
