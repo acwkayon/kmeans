@@ -7,7 +7,7 @@ meta:
   languages    : py
   license      : gpl3
   author       : Gefei Shan, Graham Williams, Anita Williams
-  url          : https://github.com/gjwgit/kmeans
+  url          : https://github.com/acwkayon/kmeans
 dependencies:
   system:
     - ffmpeg
