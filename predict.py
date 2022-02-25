@@ -1,6 +1,6 @@
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Monday 2022-01-03 09:02:34 +1100 Graham Williams>
+# Time-stamp: <Friday 2022-02-25 13:54:02 +1100 Graham Williams>
 #
 # Authors: Gefei Shan, Anita@togaware.com
 # License: General Public License v3 GPLv3
@@ -9,6 +9,7 @@
 
 import os
 import sys
+import time
 import click
 
 import numpy as np
@@ -30,7 +31,7 @@ os.chdir(get_cmd_cwd())
 @click.argument('modelfile',
                 type=click.File('r'),
                 default=sys.stdin)
-def cli(modelfile, datafile):
+def cli(datafile, modelfile):
     """Apply MODELFILE to DATAFILE.
 
 DATAFILE is required. It is a CSV file with named numeric columns that
@@ -53,6 +54,26 @@ is closest in distance to the row's observations.
     """
 
     # The datafile for predicting from is required.
+
+    # 20220225 GJW When used in a pipeline that includes a tee for the
+    # normalisation, as in the below, results in an error. The file
+    # being saved to is not closed once the predict begins.
+    #
+    # cat iris.csv |
+    #   ml normalise kmeans |
+    #   tee norm.csv |
+    #   ml train kmeans 3 --movie iris.mp4 |
+    #   python predict.py norm.csv
+    #
+    # Results in pandas.errors.EmptyDataError: No columns to parse from file
+    #
+    # A workaround for now is to sleep for 1s if the file size of the
+    # supplied file is zero.  Alternatively, is there a way to check
+    # that the file is still open by another process and then wait
+    # until it is closed?
+
+    if os.stat(datafile.name).st_size == 0:
+        time.sleep(1)
 
     df = pd.read_csv(datafile)
     data = df.to_numpy()
