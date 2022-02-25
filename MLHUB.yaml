@@ -3,7 +3,7 @@ meta:
   name         : kmeans
   title        : Kmeans clustering with animation.
   keywords     : python, visualisation, cluster, kmeans
-  version      : 1.0.0
+  version      : 1.0.1
   languages    : py
   license      : gpl3
   author       : Gefei Shan, Graham Williams, Anita Williams
