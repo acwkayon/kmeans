@@ -28,5 +28,7 @@ Some simple examples:
 wget https://raw.githubusercontent.com/acwkayon/kmeans/master/iris.csv
 ml train kmeans 3 iris.csv
 ml train kmeans 3 iris.csv --view
-ml train kmeans 3 --view --movie iris.mp4 iris.csv | ml predict kmeans iris.csv | ml visualise kmeans
+ml train kmeans 3 --view --movie iris.mp4 iris.csv |
+	ml predict kmeans iris.csv |
+	ml visualise kmeans
 ```
