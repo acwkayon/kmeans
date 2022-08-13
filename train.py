@@ -2,12 +2,18 @@
 #
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Monday 2022-01-03 09:01:58 +1100 Graham Williams>
+# Time-stamp: <Sunday 2022-03-13 06:51:49 +1100 Graham Williams>
 #
 # Authors: Gefei Shan, Graham.Williams@togaware.com
 # License: General Public License v3 GPLv3
 # License: https://www.gnu.org/licenses/gpl-3.0.en.html
 # Copyright: (c) Gefei Shan, Graham Williams. All rights reserved.
+
+# ----------------------------------------------------------------------
+# Setup
+# ----------------------------------------------------------------------
+
+# Import the required libraries.
 
 import os
 import sys
@@ -23,13 +29,14 @@ from mlhub.pkg import mlpreview, get_cmd_cwd
 
 from utils import KMeans, update, save_animation
 
-
 # Ensure paths are relative to the user's cwd.
 
 os.chdir(get_cmd_cwd())
 
-# Command line argument and options.
 
+# -----------------------------------------------------------------------
+# Command line argument and options
+# -----------------------------------------------------------------------
 
 @click.command()
 @click.argument("k",
