@@ -2,7 +2,7 @@
 #
 # MLHub demonstrator and toolkit for kmeans.
 #
-# Time-stamp: <Sunday 2022-03-13 06:51:49 +1100 Graham Williams>
+# Time-stamp: <Wed 2022-08-17 18:52:32 -0500 Anita Williams>
 #
 # Authors: Gefei Shan, Graham.Williams@togaware.com
 # License: General Public License v3 GPLv3
@@ -71,14 +71,21 @@ identify the cluster.
 
     """
 
-    # Construct a suitably structured dataset from iunput CSV file.
+    # Construct a suitably structured dataset from iunput CSV file, quit if file does not meet format requirements.
 
     try:
         df = pd.read_csv(filename)
     except pd.errors.EmptyDataError:
         click.echo("Exiting model training as no data is available.")
         sys.exit(1)
+        
+    if not all(df.apply(lambda col: pd.to_numeric(col, errors='coerce').notnull().all())) == True:
+        click.echo("Exiting model training as data looks malformed. Please check that all values are numeric.")
+        sys.exit(1)
+        
     data = df.to_numpy()
+    
+    
 
     # Build the k-means model
 
